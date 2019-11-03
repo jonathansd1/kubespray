@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## This script assumes the following packages/commands are available:
+## This script assumes the following packages/binaries are available:
 ##   - git
 ##   - vagrant
 ##   - virtualbox
@@ -54,12 +54,17 @@ vagrant up
 mkdir -p ${HOME}/.kube
 ln -sf ${PWD}/${ANSIBLE_INVENTORY}/artifacts/admin.conf ${HOME}/.kube/config
 
-## Install and initialize Helm
+## Install helm, configure K8s cluster for tiller, and initialize
 asdf plugin-add helm
 asdf install helm ${HELM_VERSION}
 asdf local helm ${HELM_VERSION}
 
-## The following was expected to fail, but an error never occurred.
-helm init
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+
+helm init --service-account tiller
 kubectl -n kube-system rollout status deploy/tiller-deploy
 helm version
+
+## Install and configure Jenkins
+helm install stable/jenkins --version 1.7.10
