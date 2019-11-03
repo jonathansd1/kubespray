@@ -100,3 +100,6 @@ ENV/
 
 # asdf
 .tool-versions
+
+# exam
+reset.sh
