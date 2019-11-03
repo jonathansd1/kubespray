@@ -97,3 +97,6 @@ target/
 # virtualenv
 venv/
 ENV/
+
+# asdf
+.tool-versions
