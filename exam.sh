@@ -3,6 +3,7 @@
 ## This script assumes the following packages/commands are available:
 ##   - git
 ##   - vagrant
+##   - virtualbox
 ##   - gcc zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel tk-devel libffi-devel
 
 ASDF_VERSION=v0.7.4
@@ -51,7 +52,7 @@ EOF
 vagrant up
 
 mkdir -p ${HOME}/.kube
-ln -sf ${INVENTORY}/artifacts/admin.conf ${HOME}/.kube/config
+ln -sf ${PWD}/${ANSIBLE_INVENTORY}/artifacts/admin.conf ${HOME}/.kube/config
 
 ## Install and initialize Helm
 asdf plugin-add helm
