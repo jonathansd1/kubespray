@@ -58,3 +58,8 @@ ln -sf ${PWD}/${ANSIBLE_INVENTORY}/artifacts/admin.conf ${HOME}/.kube/config
 asdf plugin-add helm
 asdf install helm ${HELM_VERSION}
 asdf local helm ${HELM_VERSION}
+
+## The following was expected to fail, but an error never occurred.
+helm init
+kubectl -n kube-system rollout status deploy/tiller-deploy
+helm version
