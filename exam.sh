@@ -67,4 +67,10 @@ kubectl -n kube-system rollout status deploy/tiller-deploy
 helm version
 
 ## Install and configure Jenkins
-helm install stable/jenkins --version 1.7.10
+kubectl apply -f manifests/
+helm install stable/jenkins --version 1.7.10 -f helm-override-values.yaml -n exam
+
+NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services exam-jenkins)
+NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+JENKINS_URL="${NODE_IP}:${NODE_PORT}"
+echo "Jenkins available at http://${JENKINS_URL}/login"
